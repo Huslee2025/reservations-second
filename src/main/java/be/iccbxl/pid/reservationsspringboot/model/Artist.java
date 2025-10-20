@@ -22,7 +22,7 @@ public class Artist {
 	@Size(min = 2, max = 60, message = "The lastname must be between 2 and 60 characters long.")
 	private String lastname;
 
-	protected Artist() {
+	public Artist() {
 	}
 
 	public Long getId() {
