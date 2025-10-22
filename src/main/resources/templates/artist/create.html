@@ -11,12 +11,13 @@
 </head>
 <body>
 	<div class="container">
+		<div id="notification" th:replace="~{main :: notification}"></div>
 		<div layout:fragment="content">
 			<h1>Nouvel artiste</h1>
 
 			<form th:action="@{/artists/create}" th:object="${artist}"
 				th:method="post">
-			
+
 				<div>
 					<label>Firstname:</label> <input type="text"
 						th:field="*{firstname}" maxlength="60" required>
@@ -31,7 +32,7 @@
 				</div>
 				<div>
 					<button type="submit" th:text="Ajouter">Ajouter</button>
-					
+
 					<a th:href="${back}">Annuler</a>
 				</div>
 			</form>
