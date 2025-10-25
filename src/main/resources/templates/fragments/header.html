@@ -26,11 +26,16 @@
 					Vous n'êtes pas connecté.<br> <a th:href="@{/login}"
 						class="nav-link">Se connecter</a>
 				</p>
-				<p sec:authorize="isAuthenticated()">
-					Connecté en tant que <strong th:text="${#authentication.name}"></strong><br>
-					<a th:href="@{/logout}" class="nav-link">Se déconnecter</a>
-				</p>
+				<div sec:authorize="isAuthenticated()">
+					<p>
+						Bonjour <span sec:authentication="principal.username">Bob</span>!
+					</p>
+					<form th:action="@{/logout}" method="post" class="nav-link">
+						<button class="unset">Se déconnecter</button>
+					</form>
+				</div>
 			</div>
+
 		</div>
 	</header>
 </body>
