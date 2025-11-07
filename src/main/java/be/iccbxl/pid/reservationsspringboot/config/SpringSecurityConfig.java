@@ -1,12 +1,9 @@
 package be.iccbxl.pid.reservationsspringboot.config;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,33 +26,37 @@ public class SpringSecurityConfig {
 	}
 
 	@Bean
-    public AuthenticationManager authenticationManager(
-            final AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
+	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
 	@Bean
-    public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
-        return http.cors(Customizer.withDefaults())
-                .csrf(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> {
-                	auth.requestMatchers("/admin").hasRole("ADMIN");
-                	auth.requestMatchers("/user").hasRole("MEMBER");
-                	auth.anyRequest().permitAll();
-                })
-                .formLogin(form -> form
-                    .loginPage("/login")
-                    .usernameParameter("login")
-                    .failureUrl("/login?loginError=true"))
-                .logout(logout -> logout
-                    .logoutSuccessUrl("/login?logoutSuccess=true")
-                    .deleteCookies("JSESSIONID"))
-                .exceptionHandling(exception -> exception
-                    .authenticationEntryPoint(
-			new LoginUrlAuthenticationEntryPoint("/login?loginRequired=true")))
-                .build();
-    }
+	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+		return http
+				// CSRF activé par défaut.
+				// .csrf(csrf -> csrf.withDefaults())
 
+				.authorizeHttpRequests(auth -> auth
+						// Public
+						.requestMatchers("/", "/login", "/login/**", "/css/**", "/js/**", "/forgot-password",
+								"/reset-password", "/reset-success")
+						.permitAll()
+						// Protégé par rôles
+						.requestMatchers("/admin").hasRole("ADMIN").requestMatchers("/user").hasRole("MEMBER")
+						// Le reste demande une authentification
+						.anyRequest().authenticated())
+
+				.formLogin(form -> form.loginPage("/login").usernameParameter("login")
+						.failureUrl("/login?loginError=true").permitAll())
+
+				.logout(logout -> logout.logoutSuccessUrl("/login?logoutSuccess=true").deleteCookies("JSESSIONID")
+						.permitAll())
+
+				.exceptionHandling(ex -> ex
+						.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login?loginRequired=true")))
+
+				.build();
+	}
 
 }
