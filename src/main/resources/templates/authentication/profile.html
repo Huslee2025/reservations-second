@@ -6,12 +6,13 @@
 </head>
 <body>
     <div class="container">
-        <div id="notification" th:replace="~{main :: notification}"></div>
+        <div id="notification" th:replace="~{layouts/main :: notification}"></div>
+
         <div layout:fragment="content">
             <section th:unless="${param.edit != null}">
                 <h2>Mon profil</h2>
                 <h3 th:text="|${user.firstname} ${user.lastname}|">Firstname Lastname</h3>
-                
+
                 <table>
                     <tbody>
                         <tr>
@@ -32,7 +33,16 @@
                         </tr>
                     </tbody>
                 </table>
-                <p><a th:href="@{/profile?edit}">Modifier</a></p>
+                
+                <ul>
+                    <li><a th:href="@{/profile?edit}">Modifier</a></li>
+                    <li>
+                        <form th:action="@{/profile/delete}" th:method="delete"
+                            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                            <button type="submit">Supprimer mon compte</button>
+                        </form>
+                    </li>
+                </ul>
             </section>
             <section th:if="${param.edit != null}">
                 <h2>Modifier son profil</h2>
@@ -62,7 +72,7 @@
                         <input type="email" th:field="*{email}" />
                         <div class="error" th:errors="*{email}"></div>
                     </div>
-                    
+
                     <div>
                         <label>Langue:</label>
                         <select th:field="*{langue}">
@@ -93,4 +103,3 @@
         </div>
     </div>
 </body>
-</html>
