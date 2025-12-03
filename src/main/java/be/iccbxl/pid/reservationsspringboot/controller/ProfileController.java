@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.iccbxl.pid.reservationsspringboot.dto.UserProfileDto;
 import be.iccbxl.pid.reservationsspringboot.model.Language;
@@ -63,8 +62,7 @@ public class ProfileController {
 
 	// Enregistrer les modifications
 	@PostMapping(value = "/profile", params = { "edit" })
-	public String updateProfile(@Valid @ModelAttribute("user") UserProfileDto dto, BindingResult result, Model model,
-			RedirectAttributes redirAttrs) {
+	public String updateProfile(@Valid @ModelAttribute("user") UserProfileDto dto, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("errorMessage", "Erreurs de validation !");
@@ -73,7 +71,7 @@ public class ProfileController {
 
 		// Appel du service pour gérer mot de passe, etc.
 		userService.updateUserFromDto(dto);
-		redirAttrs.addFlashAttribute("successMessage", "Profil mis à jour avec succès !");
+		model.addAttribute("successMessage", "Profil mis à jour avec succès !");
 		return "redirect:profile";
 	}
 }

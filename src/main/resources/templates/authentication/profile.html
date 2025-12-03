@@ -37,7 +37,7 @@
             <section th:if="${param.edit != null}">
                 <h2>Modifier son profil</h2>
 
-                <form th:action="@{/profile}" th:object="${user}" method="post">
+                <form th:action="@{/profile?edit}" th:object="${user}" method="post">
                     <input type="hidden" th:field="*{id}" />
 
                     <div>
