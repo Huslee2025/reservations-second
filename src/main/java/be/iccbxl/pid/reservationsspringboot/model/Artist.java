@@ -7,14 +7,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "artists")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Artist {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Setter(AccessLevel.NONE) // pas de setId
 	private Long id;
-	
+
 	@NotBlank(message = "The firstname must not be empty.")
 	@Size(min = 2, max = 60, message = "The firstname must be between 2 and 60 characters long.")
 	private String firstname;
@@ -22,40 +33,4 @@ public class Artist {
 	@NotBlank(message = "The lastname must not be empty.")
 	@Size(min = 2, max = 60, message = "The lastname must be between 2 and 60 characters long.")
 	private String lastname;
-
-	public Artist() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	// …
-	
-	@Override
-	public String toString() {
-		return firstname + " " + lastname;
-	}
-
-	
 }
