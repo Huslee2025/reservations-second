@@ -9,6 +9,6 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 public class ThymeleafConfiguration {
 	@Bean
 	public LayoutDialect thymeleafDialect() {
-	    return new LayoutDialect();
+		return new LayoutDialect();
 	}
 }
