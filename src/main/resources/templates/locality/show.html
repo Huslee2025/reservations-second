@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Localité</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1 th:text="${title}">Fiche d'une localité</h1>
+
+    <p>
+        <strong>Code postal :</strong>
+        <span th:text="${locality.postalCode}">1000</span>
+    </p>
+    <p>
+        <strong>Localité :</strong>
+        <span th:text="${locality.locality}">Bruxelles</span>
+    </p>
+
+    <nav>
+        <a th:href="@{/localities}">Retour à la liste</a>
+    </nav>
+</div>
+</body>
+</html>
