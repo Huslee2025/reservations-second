@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Liste des lieux</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1 th:text="${title}">Liste des lieux</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Désignation</th>
+            <th>Adresse</th>
+            <th>Localité</th>
+            <th>Détail</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="location : ${locations}">
+            <td th:text="${location.designation}">Espace Delvaux</td>
+            <td th:text="${location.address}">3 rue Gratès</td>
+            <td th:text="${location.locality.locality}">Bruxelles</td>
+            <td>
+                <a th:href="@{/locations/{slug}(slug=${location.slug})}">Voir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

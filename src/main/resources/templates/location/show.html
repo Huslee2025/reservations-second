@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+<title>Lieu</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<h1 th:text="${title}">Fiche d'un lieu</h1>
+
+		<p>
+			<strong>Désignation :</strong> <span
+				th:text="${location.designation}">Dexia Art Center</span>
+		</p>
+
+		<p>
+			<strong>Adresse :</strong> <span th:text="${location.address}">50
+				rue de l'Ecuyer</span>
+		</p>
+
+		<p>
+			<strong>Localité :</strong> <span
+				th:text="${location.locality.postalCode}">1000</span> <span
+				th:text="${location.locality.locality}">Bruxelles</span>
+		</p>
+
+		<p th:if="${location.website != null}">
+			<strong>Site web :</strong> <a th:href="${location.website}"
+				th:text="${location.website}" target="_blank">Site</a>
+		</p>
+
+		<p th:if="${location.phone != null}">
+			<strong>Téléphone :</strong> <span th:text="${location.phone}">+32
+				(0)2/...</span>
+		</p>
+
+		<nav>
+			<a th:href="@{/locations}">Retour à la liste</a>
+		</nav>
+	</div>
+</body>
+</html>

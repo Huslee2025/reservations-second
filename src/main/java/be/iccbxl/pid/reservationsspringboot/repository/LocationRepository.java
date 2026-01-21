@@ -9,5 +9,6 @@ import be.iccbxl.pid.reservationsspringboot.model.Location;
 public interface LocationRepository extends CrudRepository<Location, Long> {
     Location findByDesignation(String designation);
 
-    Optional<Location> findById(Long id);
+    Optional<Location> findBySlug(String slug);
+
 }

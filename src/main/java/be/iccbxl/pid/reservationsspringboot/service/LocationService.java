@@ -2,7 +2,6 @@ package be.iccbxl.pid.reservationsspringboot.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,24 +22,23 @@ public class LocationService {
 	return locations;
     }
 
-    public Location get(String id) {
-	Long indice = (long) Integer.parseInt(id);
-	Optional<Location> location = repository.findById(indice);
+    public Location get(Long id) {
+	return repository.findById(id).orElse(null);
+    }
 
-	return location.isPresent() ? location.get() : null;
+    public Location getBySlug(String slug) {
+	return repository.findBySlug(slug).orElse(null);
     }
 
     public void add(Location location) {
 	repository.save(location);
     }
 
-    public void update(String id, Location location) {
+    public void update(Location location) {
 	repository.save(location);
     }
 
-    public void delete(String id) {
-	Long indice = (long) Integer.parseInt(id);
-
-	repository.deleteById(indice);
+    public void delete(Long id) {
+	repository.deleteById(id);
     }
 }
