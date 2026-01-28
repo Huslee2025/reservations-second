@@ -1,5 +1,8 @@
 package be.iccbxl.pid.reservationsspringboot.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.slugify.Slugify;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +34,9 @@ public class Location {
 
     private String website;
     private String phone;
+
+    @OneToMany(mappedBy = "location", targetEntity = Show.class)
+    private List<Show> shows = new ArrayList<>();
 
     protected Location() {
     }
@@ -107,9 +114,29 @@ public class Location {
 	this.phone = phone;
     }
 
+    public List<Show> getShows() {
+	return shows;
+    }
+
+    public Location addShow(Show show) {
+	if (show != null && !this.shows.contains(show)) {
+	    this.shows.add(show);
+	}
+	return this;
+    }
+
+    public Location removeShow(Show show) {
+	if (show != null) {
+	    this.shows.remove(show);
+	}
+	return this;
+    }
+
     @Override
     public String toString() {
 	return "Location [id=" + id + ", slug=" + slug + ", designation=" + designation + ", address=" + address
-		+ ", locality=" + locality + ", website=" + website + ", phone=" + phone + "]";
+		+ ", locality=" + locality + ", website=" + website + ", phone=" + phone + ", shows=" + shows.size()
+		+ "]";
     }
+
 }
