@@ -2,6 +2,7 @@ package be.iccbxl.pid.reservationsspringboot.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Representation {
     /**
      * Date de création de la représentation
      */
+    @Column(name = "schedule", nullable = false)
     private LocalDateTime schedule;
 
     /**
