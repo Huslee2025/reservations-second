@@ -36,7 +36,7 @@ public class Type {
 
     // Côté propriétaire: c’est ici qu’on décrit la table de liaison
     @ManyToMany
-    @JoinTable(name = "artiste_type", joinColumns = @JoinColumn(name = "type_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
+    @JoinTable(name = "artist_type", joinColumns = @JoinColumn(name = "type_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
     private List<Artist> artists = new ArrayList<>();
 
     public Type(String type) {
