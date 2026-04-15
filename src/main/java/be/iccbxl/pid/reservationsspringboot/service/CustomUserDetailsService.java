@@ -1,6 +1,5 @@
 package be.iccbxl.pid.reservationsspringboot.service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 
@@ -19,26 +19,37 @@ import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-	
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = userRepository.findByLogin(username);
-		
-        if (user == null) {
-            throw new UsernameNotFoundException("User " + username + " not found");
-        }
-        
-        return new org.springframework.security.core.userdetails.User(
-        		username, 
-        		user.getPassword(), 
-        		getGrantedAuthorities(user.getRole().toString()));
-    }
-	
-    private List<GrantedAuthority> getGrantedAuthorities(String role) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+	final User user = userRepository.findByLogin(username);
 
-        return authorities;
+	if (user == null) {
+	    throw new UsernameNotFoundException("User " + username + " not found");
+	}
+
+	return new org.springframework.security.core.userdetails.User(username, user.getPassword(),
+		getGrantedAuthorities(user.getRoles()));
     }
 
+    private List<GrantedAuthority> getGrantedAuthorities(List<Role> roles) {
+	List<GrantedAuthority> authorities = new ArrayList<>();
+
+	if (roles == null) {
+	    return authorities;
+	}
+
+	for (Role r : roles) {
+	    if (r == null)
+		continue;
+
+	    String roleName = r.getRole();
+
+	    if (roleName != null && !roleName.isBlank()) {
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + roleName.toUpperCase()));
+	    }
+	}
+
+	return authorities;
+    }
 }
