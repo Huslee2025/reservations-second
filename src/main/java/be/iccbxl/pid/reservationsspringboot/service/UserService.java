@@ -64,7 +64,14 @@ public class UserService {
     }
 
     public void updateUser(long id, User user) {
-	userRepository.save(user);
+	User existing = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+	existing.setFirstname(user.getFirstname());
+	existing.setLastname(user.getLastname());
+	existing.setEmail(user.getEmail());
+	existing.setLangue(user.getLangue());
+
+	userRepository.save(existing);
     }
 
     public void updateUserFromDto(UserProfileDto dto) {
