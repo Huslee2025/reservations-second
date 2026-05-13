@@ -61,6 +61,9 @@ public class Show {
     @ManyToMany(mappedBy = "shows")
     private List<ArtistType> artistTypes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "show")
+    private List<Review> reviews = new ArrayList<>();
+
     public Show() {
     }
 
@@ -177,13 +180,9 @@ public class Show {
     }
 
     public Show removeRepresentation(Representation representation) {
-	if (this.representations.contains(representation)) {
-	    this.representations.remove(representation);
-	    if (representation.getLocation().equals(this)) {
-		representation.setLocation(null);
-	    }
+	if (representation != null && this.representations.remove(representation)) {
+	    representation.setShow(null);
 	}
-
 	return this;
     }
 
@@ -210,6 +209,25 @@ public class Show {
 	    artistType.getShows().remove(this);
 	}
 
+	return this;
+    }
+
+    public List<Review> getReviews() {
+	return reviews;
+    }
+
+    public Show addReview(Review review) {
+	if (review != null && !this.reviews.contains(review)) {
+	    this.reviews.add(review);
+	    review.setShow(this);
+	}
+	return this;
+    }
+
+    public Show removeReview(Review review) {
+	if (review != null && this.reviews.remove(review)) {
+	    review.setShow(null);
+	}
 	return this;
     }
 

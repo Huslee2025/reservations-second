@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(exclude = { "roles", "representations" })
+@ToString(exclude = { "roles", "representations", "reviews" })
 public class User {
 
     @Id
@@ -68,6 +69,9 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Representation> representations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
+
     public User addRole(Role role) {
 	if (role != null && !this.roles.contains(role)) {
 	    this.roles.add(role);
@@ -96,6 +100,21 @@ public class User {
 	if (representation != null && this.representations.contains(representation)) {
 	    this.representations.remove(representation);
 	    representation.getUsers().remove(this);
+	}
+	return this;
+    }
+
+    public User addReview(Review review) {
+	if (review != null && !this.reviews.contains(review)) {
+	    this.reviews.add(review);
+	    review.setUser(this);
+	}
+	return this;
+    }
+
+    public User removeReview(Review review) {
+	if (review != null && this.reviews.remove(review)) {
+	    review.setUser(null);
 	}
 	return this;
     }
