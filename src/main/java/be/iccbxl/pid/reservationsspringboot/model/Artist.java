@@ -3,6 +3,8 @@ package be.iccbxl.pid.reservationsspringboot.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +13,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +28,6 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Setter(AccessLevel.NONE) // pas de setId
     private Long id;
 
     @NotBlank(message = "The firstname must not be empty.")
@@ -38,6 +38,7 @@ public class Artist {
     @Size(min = 2, max = 60, message = "The lastname must be between 2 and 60 characters long.")
     private String lastname;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "artists")
     private List<Type> types = new ArrayList<>();
 
